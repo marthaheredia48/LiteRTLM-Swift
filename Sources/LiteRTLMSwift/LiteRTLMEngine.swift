@@ -47,7 +47,7 @@ public final class LiteRTLMEngine: @unchecked Sendable {
     public var isReady: Bool { status == .ready }
 
     private let modelPath: URL
-    private let backend: String
+  
 
     private var engine: OpaquePointer?  // LiteRtLmEngine*
     private let inferenceQueue = DispatchQueue(label: "com.litertlm.inference", qos: .userInitiated)
@@ -60,9 +60,22 @@ public final class LiteRTLMEngine: @unchecked Sendable {
     /// - Parameters:
     ///   - modelPath: Path to the `.litertlm` model file on disk.
     ///   - backend: Compute backend — `"cpu"` or `"gpu"` (GPU uses Metal on iOS).
+    private let textBackend: String
+    private let visionBackend: String
+    private let audioBackend: String
+
     public init(modelPath: URL, backend: String = "cpu") {
         self.modelPath = modelPath
-        self.backend = backend
+        self.textBackend = backend
+        self.visionBackend = backend
+        self.audioBackend = backend
+    }
+
+    public init(modelPath: URL, textBackend: String, visionBackend: String, audioBackend: String) {
+        self.modelPath = modelPath
+        self.textBackend = textBackend
+        self.visionBackend = visionBackend
+        self.audioBackend = audioBackend
     }
 
     deinit {
@@ -94,10 +107,11 @@ public final class LiteRTLMEngine: @unchecked Sendable {
         guard status != .ready && status != .loading else { return }
 
         status = .loading
-        Self.log.info("Loading model: \(self.modelPath.lastPathComponent), backend: \(self.backend)")
-
+        Self.log.info("Loading model: \(self.modelPath.lastPathComponent), backends: text=\(self.textBackend) vision=\(self.visionBackend) audio=\(self.audioBackend)")
         let path = modelPath.path
-        let backendStr = self.backend
+        let textBackendStr = self.textBackend
+        let visionBackendStr = self.visionBackend
+        let audioBackendStr = self.audioBackend
         let startTime = CFAbsoluteTimeGetCurrent()
 
         guard FileManager.default.fileExists(atPath: path) else {
@@ -114,13 +128,13 @@ public final class LiteRTLMEngine: @unchecked Sendable {
                         litert_lm_set_min_log_level(1)
 
                         guard let settings = litert_lm_engine_settings_create(
-                            path, backendStr, backendStr, backendStr
+                            path, textBackendStr, visionBackendStr, audioBackendStr
                         ) else {
                             throw LiteRTLMError.engineCreationFailed("Failed to create engine settings")
                         }
 
                         litert_lm_engine_settings_set_max_num_tokens(settings, 4096)
-
+                        
                         let cacheDir = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
                             .appendingPathComponent("litertlm_cache").path
                         try? FileManager.default.createDirectory(atPath: cacheDir, withIntermediateDirectories: true)
