@@ -125,7 +125,7 @@ info "Using $(xcodebuild -version | head -1)"
 info "Building for iOS device (arm64)..."
 cd "$LITERT_LM_DIR"
 
-$BAZEL_CMD build --config=ios_arm64 //c:libLiteRTLMEngine.dylib 2>&1 | tail -5
+$BAZEL_CMD build --verbose_failures --config=ios_arm64 //c:libLiteRTLMEngine.dylib 2>&1 | tail -5
 
 DEVICE_DYLIB_SRC="$LITERT_LM_DIR/bazel-bin/c/libLiteRTLMEngine.dylib"
 if [ ! -f "$DEVICE_DYLIB_SRC" ]; then
