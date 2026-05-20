@@ -194,7 +194,7 @@ package_framework() {
 
     # Copy headers
     cp "$HEADERS_DIR/engine.h" "$FW_DIR/Headers/"
-    cp "$HEADERS_DIR/litert_lm_logging.h" "$FW_DIR/Headers/"
+    [ -f "$HEADERS_DIR/litert_lm_logging.h" ] && cp "$HEADERS_DIR/litert_lm_logging.h" "$FW_DIR/Headers/" || true
 
     # Create module map
     cat > "$FW_DIR/Modules/module.modulemap" << 'MODULEMAP'
