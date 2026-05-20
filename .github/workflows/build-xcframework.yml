@@ -10,40 +10,35 @@ on:
 jobs:
   build:
     name: Build CLiteRTLM.xcframework
-    runs-on: macos-14
+    runs-on: macos-15
     timeout-minutes: 120
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Show environment
-        run: |
-          echo "Machine: $(uname -m)"
-          echo "Memory: $(sysctl -n hw.memsize | awk '{print $1/1073741824 " GB"}')"
-          echo "Cores: $(sysctl -n hw.ncpu)"
-          xcodebuild -version
-          df -h /
+      - name: Show available Xcodes
+        run: ls /Applications/ | grep Xcode
 
       - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
+
+      - name: Show environment
         run: |
-          sudo xcode-select -s /Applications/Xcode_15.4.app/Contents/Developer || \
-          sudo xcode-select -s /Applications/Xcode_15.3.app/Contents/Developer || \
-          sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
           xcodebuild -version
+          sw_vers
+          uname -m
 
       - name: Install Bazelisk
-        run: |
-          brew install bazelisk
-          bazelisk version
+        run: brew install bazelisk
 
       - name: Make script executable
         run: chmod +x scripts/build-xcframework.sh
 
       - name: Build XCFramework
-        run: ./scripts/build-xcframework.sh
         env:
           BAZELISK_ARCH: arm64
+        run: ./scripts/build-xcframework.sh
 
       - name: Verify output
         run: |
