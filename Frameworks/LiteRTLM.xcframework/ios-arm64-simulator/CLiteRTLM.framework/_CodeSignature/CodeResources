@@ -6,11 +6,7 @@
 	<dict>
 		<key>Headers/engine.h</key>
 		<data>
-		YgNQHb3d5ZSMt+OArqkf2XKjFyA=
-		</data>
-		<key>Headers/litert_lm_logging.h</key>
-		<data>
-		MfdvlNCnI/1+MRQ6WSUD71JLSKo=
+		E+bnQ49JOtrAx5fm/rCUhkqHLes=
 		</data>
 		<key>Info.plist</key>
 		<data>
@@ -27,14 +23,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			ys7h0Yqp4sIq642i/BV2slwD1xBOUxmgNSxkpXu2kek=
-			</data>
-		</dict>
-		<key>Headers/litert_lm_logging.h</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			GoY5JRTjJ6OQBnbRLubrfdLohd2lPKMDQF6nAB34PCc=
+			N0wHdwmKDDLkMrF2xRTnRzdG93kZiVl++aiTfHepJpI=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
