@@ -122,6 +122,10 @@ info "Using $(xcodebuild -version | head -1)"
 # 3. Build for iOS device (arm64)
 # ---------------------------------------------------------------------------
 
+info "Listing source files in c/..."
+
+ls "$LITERT_LM_DIR/c/"*.cc "$LITERT_LM_DIR/c/"*.h 2>&1 || true
+
 info "Building for iOS device (arm64)..."
 cd "$LITERT_LM_DIR"
 
