@@ -82,8 +82,6 @@ cc_binary(
     srcs = [
         "engine.cc",
         "engine.h",
-        "litert_lm_logging.cc",
-        "litert_lm_logging.h",
     ],
     linkopts = [
         "-Wl,-exported_symbol,_litert_lm_*",
